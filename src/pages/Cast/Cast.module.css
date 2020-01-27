@@ -1,0 +1,19 @@
+.list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.listItem {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.listItemName {
+  margin: 10px;
+  text-align: center;
+}
+
+.listItemCharacter {
+  font-weight: bold;
+}
