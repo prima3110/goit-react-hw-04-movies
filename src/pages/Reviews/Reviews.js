@@ -14,21 +14,23 @@ export default class Reviews extends Component {
 
   state = {
     movieReviews: null,
+    error: null,
   };
 
   componentDidMount() {
     const { match } = this.props;
     API.getMovieReviews(match.params.movieId)
       .then(res => this.setState({ movieReviews: res.data }))
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ error: err }));
   }
 
   render() {
-    const { movieReviews } = this.state;
+    const { movieReviews, error } = this.state;
     return (
       <div>
+        {error && <>Something went wrong</>}
         {movieReviews && movieReviews.results.length > 0 ? (
-          <ul>
+          <ul className={styles.list}>
             {movieReviews.results.map(el => (
               <li key={el.id}>
                 <p className={styles.text}> Author: {el.author} </p>

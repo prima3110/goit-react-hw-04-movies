@@ -14,6 +14,7 @@ export default class Cast extends Component {
 
   state = {
     movieCast: null,
+    error: null,
   };
 
   componentDidMount() {
@@ -21,37 +22,38 @@ export default class Cast extends Component {
     const movieID = match.params.movieId;
     API.getMovieCredits(movieID)
       .then(res => this.setState({ movieCast: res.data }))
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ error: err }));
   }
 
   render() {
-    const { movieCast } = this.state;
+    const { movieCast, error } = this.state;
     return (
       <div>
+        {error && <>Something went wrong</>}
         {movieCast && (
           <ul className={styles.list}>
-            {movieCast.cast.map(el => (
-              <li key={el.cast_id} className={styles.listItem}>
-                {el.profile_path ? (
+            {movieCast.cast.map(profile => (
+              <li key={profile.cast_id} className={styles.listItem}>
+                {profile.profile_path ? (
                   <img
-                    src={`https://image.tmdb.org/t/p/w300${el.profile_path}`}
-                    alt={el.character}
+                    src={`${API.profileActorPhoto}${profile.profile_path}`}
+                    alt={profile.character}
                     width={300}
                     height={450}
                   />
                 ) : (
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Anti-ACTA-Demonstration_in_Frankfurt_am_Main_2012-02-11_%2812%29.jpg"
-                    alt={el.character}
+                    src={API.profileActorPhotoAlternative}
+                    alt={profile.character}
                     width={300}
                     height={450}
                   />
                 )}
 
-                <p className={styles.listItemName}>{el.name}</p>
+                <p className={styles.listItemName}>{profile.name}</p>
                 <p>
                   <span className={styles.listItemCharacter}>Character: </span>
-                  {el.character}
+                  {profile.character}
                 </p>
               </li>
             ))}

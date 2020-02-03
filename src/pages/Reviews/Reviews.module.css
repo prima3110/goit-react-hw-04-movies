@@ -1,3 +1,7 @@
 .text {
   font-weight: bold;
 }
+
+.list {
+  padding: 0 30px 0;
+}

@@ -2,11 +2,14 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  padding: 0 30px 0 20px;
 }
 
 .listItem {
   list-style: none;
   margin-bottom: 20px;
+  width: 200px;
+  height: 378px;
 }
 
 .listItemName {
@@ -16,4 +19,10 @@
 
 .listItemCharacter {
   font-weight: bold;
+}
+
+img {
+  display: block;
+  width: 200px;
+  height: 300px;
 }

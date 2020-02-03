@@ -34,13 +34,14 @@ class MovieDetailsPage extends Component {
 
   state = {
     movie: null,
+    error: null,
   };
 
   componentDidMount() {
     const { match } = this.props;
     API.getMovieDetails(match.params.movieId)
       .then(res => this.setState({ movie: res.data }))
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ error: err }));
   }
 
   goBack = () => {
@@ -54,10 +55,11 @@ class MovieDetailsPage extends Component {
   };
 
   render() {
-    const { movie } = this.state;
+    const { movie, error } = this.state;
     const { match, location } = this.props;
     return (
       <>
+        {error && <>Something went wrong</>}
         {movie && (
           <>
             <button
@@ -69,7 +71,7 @@ class MovieDetailsPage extends Component {
             </button>
             <div className={styles.container}>
               <img
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                src={`${API.moviePoster}${movie.poster_path}`}
                 alt={movie.title}
               />
               <div className={styles.info}>
@@ -90,7 +92,7 @@ class MovieDetailsPage extends Component {
                 {location.state && location.state.from ? (
                   <Link
                     to={{
-                      pathname: `${match.url}/cast`,
+                      pathname: `${match.url}${API.castPath}`,
                       state: { from: { ...location.state.from } },
                     }}
                   >
@@ -99,7 +101,7 @@ class MovieDetailsPage extends Component {
                 ) : (
                   <Link
                     to={{
-                      pathname: `${match.url}/cast`,
+                      pathname: `${match.url}${API.castPath}`,
                       state: { from: { ...location } },
                     }}
                   >
@@ -111,7 +113,7 @@ class MovieDetailsPage extends Component {
                 {location.state && location.state.from ? (
                   <Link
                     to={{
-                      pathname: `${match.url}/reviews`,
+                      pathname: `${match.url}${API.reviewPath}`,
                       state: { from: { ...location.state.from } },
                     }}
                   >
@@ -120,7 +122,7 @@ class MovieDetailsPage extends Component {
                 ) : (
                   <Link
                     to={{
-                      pathname: `${match.url}/reviews`,
+                      pathname: `${match.url}${API.reviewPath}`,
                       state: { from: { ...location } },
                     }}
                   >
@@ -130,8 +132,11 @@ class MovieDetailsPage extends Component {
               </li>
             </ul>
             <Suspense fallback={<Loader />}>
-              <Route path={`${match.path}/cast`} component={Cast} />
-              <Route path={`${match.path}/reviews`} component={Reviews} />
+              <Route path={`${match.path}${API.castPath}`} component={Cast} />
+              <Route
+                path={`${match.path}${API.reviewPath}`}
+                component={Reviews}
+              />
             </Suspense>
           </>
         )}

@@ -21,6 +21,7 @@ export default class MoviesPage extends Component {
 
   state = {
     movies: null,
+    error: null,
   };
 
   componentDidMount() {
@@ -33,12 +34,11 @@ export default class MoviesPage extends Component {
 
   search = query => {
     if (query === '') {
-      this.setState({ movies: null });
-      return;
+      this.setState({ movies: '' });
     }
     API.searchMovie(query)
       .then(res => this.setState({ movies: res.data }))
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ error: err }));
     const { history } = this.props;
     history.push({
       ...this.props.location,
@@ -47,10 +47,11 @@ export default class MoviesPage extends Component {
   };
 
   render() {
-    const { movies } = this.state;
+    const { movies, error } = this.state;
     const { match, location } = this.props;
     return (
       <div>
+        {error && <>Something went wrong</>}
         <SearchBar onSubmit={this.search} />
         {movies && (
           <ul>

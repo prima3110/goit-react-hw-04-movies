@@ -31,3 +31,13 @@ export const getMovieReviews = (id, page = 1) => {
     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&language=en-US&page=${page}`,
   );
 };
+
+export const moviePoster = 'https://image.tmdb.org/t/p/w300';
+
+export const profileActorPhoto = 'https://image.tmdb.org/t/p/w300';
+
+export const profileActorPhotoAlternative =
+  'https://upload.wikimedia.org/wikipedia/commons/e/e9/Anti-ACTA-Demonstration_in_Frankfurt_am_Main_2012-02-11_%2812%29.jpg';
+
+export const castPath = '/cast';
+export const reviewPath = '/review';
